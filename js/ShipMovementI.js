@@ -21,101 +21,32 @@ g_shipMovementI.Start();
 
 function ShipMovementI() {
     var m_space = new Space();
+    var m_shell = new Shell();
     var m_canvas = null;
     var m_context = null;
     var m_speed = 1;
     //--------------------------------------------------------------------
-    var input = {
-        LEFT: 0,
-        RIGHT: 0,
-        UP: 0,
-        DOWN: 0,
+    this.Start = function () {
+        m_canvas = m_shell.GetCanvas("cvsShipMovementI");
+        if (m_canvas) {
+            m_context = m_canvas.getContext("2d");
+            if (m_context != null) {
+                m_space.Init();
+                setInterval(this.Frame, 16);
+            }
+        }
     };
     //--------------------------------------------------------------------
-    this.Start = function () {
-        var shell = new Shell();
-        shell.Init();
-        if (m_context != null) {
-            setInterval(shell.Frame, 16);
-        }
+    this.Frame = function () {
+        m_context.clearRect(0, 0, m_canvas.width, m_canvas.height);
+        m_context.save();
+        m_space.Update();
+        m_space.Draw();
+        m_context.restore();
     };
     //--------------------------------------------------------------------
     this.SetSpeed = function (value) {
         m_speed = value;
-    };
-    //--------------------------------------------------------------------
-    function Shell() {
-        this.Init = function () {
-            m_canvas = document.getElementById("cvsShipMovementI");
-            if (m_canvas) {
-                m_canvas.addEventListener("keydown", this.KeyDown);
-                m_canvas.addEventListener("keyup", this.KeyUp);
-                m_context = m_canvas.getContext("2d");
-                m_space.Init();
-            }
-        };
-        //--------------------------------------------------------------------
-        this.Frame = function () {
-            m_context.clearRect(0, 0, m_canvas.width, m_canvas.height);
-            m_context.save();
-            m_space.Update();
-            m_space.Draw();
-            m_context.restore();
-        };
-        //--------------------------------------------------------------------
-        this.KeyUp = function (e) {
-            switch (e.keyCode) {
-                case keys.W:
-                case keys.UP:
-                    input.UP = 0;
-                    break;
-
-                case keys.S:
-                case keys.DOWN:
-                    input.DOWN = 0;
-                    break;
-
-                case keys.A:
-                case keys.LEFT:
-                    input.LEFT = 0;
-                    break;
-
-                case keys.D:
-                case keys.RIGHT:
-                    input.RIGHT = 0;
-                    break;
-            }
-        };
-        //--------------------------------------------------------------------
-        this.KeyDown = function (e) {
-            switch (e.keyCode) {
-                case keys.W:
-                case keys.UP:
-                    input.UP = 1;
-                    input.DOWN = 0;
-                    break;
-
-                case keys.S:
-                case keys.DOWN:
-                    input.DOWN = 1;
-                    input.UP = 0;
-                    break;
-
-                case keys.A:
-                case keys.LEFT:
-                    input.LEFT = 1;
-                    input.RIGHT = 0;
-                    break;
-
-                case keys.D:
-                case keys.RIGHT:
-                    input.RIGHT = 1;
-                    input.LEFT = 0;
-                    break;
-            }
-            e.preventDefault();
-        };
-        //--------------------------------------------------------------------
     };
     //--------------------------------------------------------------------
 
@@ -137,14 +68,14 @@ function ShipMovementI() {
         };
         //--------------------------------------------------------------------
         this.Update = function () {
-            if (input.UP) {
+            if (m_shell.IsKeyPressed(INPUT.UP)) {
                 m_playerPosition.y -= m_speed;
-            } else if (input.DOWN) {
+            } else if (m_shell.IsKeyPressed(INPUT.DOWN)) {
                 m_playerPosition.y += m_speed;
             }
-            if (input.RIGHT) {
+            if (m_shell.IsKeyPressed(INPUT.RIGHT)) {
                 m_playerPosition.x += m_speed;
-            } else if (input.LEFT) {
+            } else if (m_shell.IsKeyPressed(INPUT.LEFT)) {
                 m_playerPosition.x -= m_speed;
             }
         };

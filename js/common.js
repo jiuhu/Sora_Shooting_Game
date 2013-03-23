@@ -15,6 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+//  Global Variables
 var TWO_PI = 2 * Math.PI;
 //--------------------------------------------------------------------
 
@@ -33,6 +34,105 @@ var keys = {
     UP: 38,
     DOWN: 40,
     SPACE: 32,
+    CTRL: 17,
+};
+//--------------------------------------------------------------------
+
+var INPUT = {
+    LEFT: 0,
+    RIGHT: 1,
+    UP: 2,
+    DOWN: 3,
+    BTN_A: 4,
+    BTN_B: 5,
+};
+//--------------------------------------------------------------------
+
+function Shell() {
+    var m_input = [0, 0, 0, 0, 0, 0];
+    //--------------------------------------------------------------------
+    this.GetCanvas = function (name) {
+        canvas = document.getElementById(name);
+        if (canvas) {
+            canvas.addEventListener("keydown", this.KeyDown);
+            canvas.addEventListener("keyup", this.KeyUp);
+        }
+        return canvas;
+    };
+    //--------------------------------------------------------------------
+    this.IsKeyPressed = function (key) {
+        return m_input[key];
+    };
+    //--------------------------------------------------------------------
+    this.KeyUp = function (e) {
+        switch (e.keyCode) {
+            case keys.W:
+            case keys.UP:
+                m_input[INPUT.UP] = 0;
+                break;
+
+            case keys.S:
+            case keys.DOWN:
+                m_input[INPUT.DOWN] = 0;
+                break;
+
+            case keys.A:
+            case keys.LEFT:
+                m_input[INPUT.LEFT] = 0;
+                break;
+
+            case keys.D:
+            case keys.RIGHT:
+                m_input[INPUT.RIGHT] = 0;
+                break;
+
+            case keys.SPACE:
+                m_input[INPUT.BTN_A] = 0;
+                break;
+
+            case keys.CTRL:
+                m_input[INPUT.BTN_B] = 0;
+                break;
+        }
+    };
+    //--------------------------------------------------------------------
+    this.KeyDown = function (e) {
+        switch (e.keyCode) {
+            case keys.W:
+            case keys.UP:
+                m_input[INPUT.UP] = 1;
+                m_input[INPUT.DOWN] = 0;
+                break;
+
+            case keys.S:
+            case keys.DOWN:
+                m_input[INPUT.DOWN] = 1;
+                m_input[INPUT.UP] = 0;
+                break;
+
+            case keys.A:
+            case keys.LEFT:
+                m_input[INPUT.LEFT] = 1;
+                m_input[INPUT.RIGHT] = 0;
+                break;
+
+            case keys.D:
+            case keys.RIGHT:
+                m_input[INPUT.RIGHT] = 1;
+                m_input[INPUT.LEFT] = 0;
+                break;
+
+            case keys.SPACE:
+                m_input[INPUT.BTN_A] = 1;
+                break;
+
+            case keys.CTRL:
+                m_input[INPUT.BTN_B] = 1;
+                break;
+        }
+        e.preventDefault();
+    };
+    //--------------------------------------------------------------------
 };
 //--------------------------------------------------------------------
 
