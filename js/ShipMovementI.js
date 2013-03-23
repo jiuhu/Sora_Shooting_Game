@@ -50,7 +50,6 @@ function ShipMovementI() {
             if (m_canvas) {
                 m_canvas.addEventListener("keydown", this.KeyDown);
                 m_canvas.addEventListener("keyup", this.KeyUp);
-                m_canvas.focus();
                 m_context = m_canvas.getContext("2d");
                 m_space.Init();
             }
