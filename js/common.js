@@ -155,14 +155,23 @@ function GenStars(canvas, img) {
 };
 //--------------------------------------------------------------------
 
+var g_shipSpeed = 1;
+function shipSpeedAction(select, canvas) {
+    canvas.focus();
+    g_shipSpeed = parseInt(select.value, 10);
+}
+//--------------------------------------------------------------------
+
 var g_bulletSpeed = 2;
-function speedAction(select) {
+function bulletSpeedAction(select, canvas) {
+    canvas.focus();
     g_bulletSpeed = parseInt(select.value, 10);
 }
 //--------------------------------------------------------------------
 
 var g_autofireRate = 30;
-function autofireAction(select) {
+function autofireAction(select, canvas) {
+    canvas.focus();
     g_autofireRate = parseInt(select.value, 10);
 }
 //--------------------------------------------------------------------
