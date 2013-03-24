@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//  Global Variables
 var TWO_PI = 2 * Math.PI;
 //--------------------------------------------------------------------
 
