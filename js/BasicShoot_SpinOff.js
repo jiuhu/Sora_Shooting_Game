@@ -15,18 +15,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var g_basicShootI = new BasicShootI();
-g_basicShootI.Start();
+var g_basicShootSpinOff = new BasicShootSpinOff();
+g_basicShootSpinOff.Start();
 //--------------------------------------------------------------------
 
-function BasicShootI() {
+function BasicShootSpinOff() {
     var m_space = new Space();
     var m_shell = new Shell();
     var m_canvas = null;
     var m_context = null;
     //--------------------------------------------------------------------
     this.Start = function () {
-        m_canvas = m_shell.GetCanvas("cvsBasicShootI");
+        m_canvas = m_shell.GetCanvas("cvsBasicShootSpinOff");
         if (m_canvas) {
             m_context = m_canvas.getContext("2d");
             if (m_context != null) {
@@ -51,6 +51,7 @@ function BasicShootI() {
         var m_playerPosition = { x: 0, y: 0 };
         var m_playerRadius = 0;
         var m_playerOffset = 0;
+        var m_bulletImg = null;
         var m_bulletList = [];
         var m_bulletSize = 0;
         var m_bulletOffset = 0;
@@ -66,12 +67,12 @@ function BasicShootI() {
             m_playerPosition.x = m_canvas.width / 2;
             m_playerPosition.y = m_canvas.height / 2;
 
-            m_context.fillStyle = "red";
-            m_bulletSize = 8;
-            m_bulletOffset = -4;
+            m_bulletImg = new Image();
+            m_bulletImg.src = "https://sites.google.com/site/ahewe95/sora_shooting_game/beam32.png";
+            m_bulletSize = 16;
+            m_bulletOffset = -m_bulletSize;
         };
         //--------------------------------------------------------------------
-        var prevButton = 0;
         this.Update = function () {
             if (m_shell.IsKeyPressed(INPUT.UP)) {
                 this.MoveY(-g_shipSpeed);
@@ -83,10 +84,9 @@ function BasicShootI() {
             } else if (m_shell.IsKeyPressed(INPUT.LEFT)) {
                 this.MoveX(-g_shipSpeed);
             }
-            if (m_shell.IsKeyPressed(INPUT.BTN_A) && !prevButton) {
+            if (m_shell.IsKeyPressed(INPUT.BTN_A)) {
                 this.Shoot();
             }
-            prevButton = m_shell.IsKeyPressed(INPUT.BTN_A);
         };
         //--------------------------------------------------------------------
         this.Draw = function () {
@@ -97,8 +97,9 @@ function BasicShootI() {
                 if (bullet.y < 0) {
                     m_bulletList.splice(i, 1);
                 } else {
-                    m_context.setTransform(1, 0, 0, 1, bullet.x, bullet.y);
-                    m_context.fillRect(m_bulletOffset, m_bulletOffset, m_bulletSize, m_bulletSize);
+                    var x = (g_staticBeam) ? m_playerPosition.x : bullet.x;
+                    m_context.setTransform(1, 0, 0, 1, x, bullet.y);
+                    m_context.drawImage(m_bulletImg, m_bulletOffset, -24);
                 }
             }
             m_context.setTransform(1, 0, 0, 1, m_playerPosition.x, m_playerPosition.y);
