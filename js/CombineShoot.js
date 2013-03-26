@@ -15,18 +15,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var g_autoFireShoot = new AutoFireShoot();
-g_autoFireShoot.Start();
+var g_combineShoot = new CombineShoot();
+g_combineShoot.Start();
 //--------------------------------------------------------------------
 
-function AutoFireShoot() {
+function CombineShoot() {
     var m_space = new Space();
     var m_shell = new Shell();
     var m_canvas = null;
     var m_context = null;
     //--------------------------------------------------------------------
     this.Start = function () {
-        m_canvas = m_shell.GetCanvas("cvsAutoFireShoot");
+        m_canvas = m_shell.GetCanvas("cvsCombineShoot");
         if (m_canvas) {
             m_context = m_canvas.getContext("2d");
             if (m_context != null) {
@@ -55,6 +55,7 @@ function AutoFireShoot() {
         var m_bulletSize = 0;
         var m_bulletOffset = 0;
         var m_shootCounter = 0;
+        var m_prevShootStatus = 0;
         //--------------------------------------------------------------------
         this.Init = function () {
             m_bgImg = new Image();
@@ -83,15 +84,15 @@ function AutoFireShoot() {
             } else if (m_shell.IsKeyPressed(INPUT.LEFT)) {
                 this.MoveX(-g_shipSpeed);
             }
-            if (m_shell.IsKeyPressed(INPUT.BTN_A)) {
-                if (!m_shootCounter) {
+            var shoot = m_shell.IsKeyPressed(INPUT.BTN_A);
+            if (shoot) {
+                if (!m_prevShootStatus || !m_shootCounter) {
                     this.Shoot();
                     m_shootCounter = g_autofireRate;
                 }
-            }
-            if (m_shootCounter) {
                 m_shootCounter--;
             }
+            m_prevShootStatus = shoot;
         };
         //--------------------------------------------------------------------
         this.Draw = function () {
