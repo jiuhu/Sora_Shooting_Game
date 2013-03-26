@@ -171,6 +171,6 @@ function bulletSpeedAction(select, canvas) {
 var g_autofireRate = 30;
 function autofireAction(select, canvas) {
     canvas.focus();
-    g_autofireRate = parseInt(select.value, 10);
+    g_autofireRate = Math.floor(60 / parseInt(select.value, 10));
 }
 //--------------------------------------------------------------------
