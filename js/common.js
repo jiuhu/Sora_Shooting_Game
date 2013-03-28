@@ -135,6 +135,27 @@ function Shell() {
 };
 //--------------------------------------------------------------------
 
+function DrawCircle(context, x, y, radius, color) {
+    context.fillStyle = color;
+    context.beginPath();
+    context.arc(x, y, radius, 0, 2 * Math.PI);
+    context.fill();
+};
+//--------------------------------------------------------------------
+
+function GenImageFromContext(context, img, width, height) {
+    var imageData = context.getImageData(0, 0, width, height);
+
+    var newCanvas = document.createElement("canvas");
+    newCanvas.width = width;
+    newCanvas.height = height;
+
+    newCanvas.getContext("2d").putImageData(imageData, 0, 0);
+
+    img.src = newCanvas.toDataURL();
+};
+//--------------------------------------------------------------------
+
 function GenStars(canvas, img) {
     var width = canvas.width;
     var height = canvas.height;
@@ -172,5 +193,39 @@ var g_autofireRate = 30;
 function autofireAction(select, canvas) {
     canvas.focus();
     g_autofireRate = Math.floor(60 / parseInt(select.value, 10));
+}
+//--------------------------------------------------------------------
+
+var g_turretShootRate = 30;
+function turretShootAction(select, canvas) {
+    canvas.focus();
+    g_turretShootRate = parseInt(select.value, 10);
+}
+//--------------------------------------------------------------------
+
+var g_wrapDistance = 100;
+function wrapDistanceAction(select, canvas) {
+    canvas.focus();
+    g_wrapDistance = parseInt(select.value, 10);
+}
+//--------------------------------------------------------------------
+
+var g_wrapRate = 30;
+function wrapRateAction(select, canvas) {
+    canvas.focus();
+    g_wrapRate = parseInt(select.value, 10);
+}
+//--------------------------------------------------------------------
+
+var g_maxCharge = 30;
+function chargedBulletAction(select, canvas) {
+    canvas.focus();
+    g_maxCharge = parseInt(select.value, 10);
+}
+//--------------------------------------------------------------------
+
+function SaveAsPNG(canvas) {
+    var url = canvas.toDataURL("image/png");
+    document.location.href = url.replace("image/png", "image/octet-stream");
 }
 //--------------------------------------------------------------------
