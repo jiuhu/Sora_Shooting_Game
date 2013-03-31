@@ -175,59 +175,76 @@ function GenStars(canvas, img) {
 };
 //--------------------------------------------------------------------
 
+function elementAction(select, canvas) {
+    canvas.focus();
+    return parseInt(select.value, 10);
+}
+//--------------------------------------------------------------------
+
 var g_shipSpeed = 1;
 function shipSpeedAction(select, canvas) {
-    canvas.focus();
-    g_shipSpeed = parseInt(select.value, 10);
+    g_shipSpeed = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
 var g_bulletSpeed = 2;
 function bulletSpeedAction(select, canvas) {
-    canvas.focus();
-    g_bulletSpeed = parseInt(select.value, 10);
+    g_bulletSpeed = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
 var g_autofireRate = 30;
 function autofireAction(select, canvas) {
-    canvas.focus();
-    g_autofireRate = Math.floor(60 / parseInt(select.value, 10));
+    g_autofireRate = Math.floor(60 / elementAction(select, canvas));
 }
 //--------------------------------------------------------------------
 
 var g_turretShootRate = 30;
 function turretShootAction(select, canvas) {
-    canvas.focus();
-    g_turretShootRate = parseInt(select.value, 10);
+    elementAction(select, canvas);
+    g_turretShootRate = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
 var g_wrapDistance = 100;
 function wrapDistanceAction(select, canvas) {
-    canvas.focus();
-    g_wrapDistance = parseInt(select.value, 10);
+    g_wrapDistance = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
 var g_wrapRate = 30;
 function wrapRateAction(select, canvas) {
-    canvas.focus();
-    g_wrapRate = parseInt(select.value, 10);
+    g_wrapRate = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
 var g_maxCharge = 30;
 function chargedBulletAction(select, canvas) {
-    canvas.focus();
-    g_maxCharge = parseInt(select.value, 10);
+    g_maxCharge = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
 var g_minCharge = 15;
 function chargedBulletMinAction(select, canvas) {
-    canvas.focus();
-    g_minCharge = parseInt(select.value, 10);
+    g_minCharge = elementAction(select, canvas);
+}
+//--------------------------------------------------------------------
+
+var g_fanBulletCount = 3;
+function fanBulletAction(select, canvas) {
+    g_fanBulletCount = elementAction(select, canvas);
+}
+//--------------------------------------------------------------------
+
+var g_circleBulletCount = 6;
+function circleBulletAction(select, canvas) {
+    g_circleBulletCount = elementAction(select, canvas);
+}
+//--------------------------------------------------------------------
+
+var g_explosionRate = 30;
+function explosionBulletAction(select, canvas) {
+    g_explosionRate = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
