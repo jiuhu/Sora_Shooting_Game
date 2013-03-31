@@ -187,9 +187,21 @@ function shipSpeedAction(select, canvas) {
 }
 //--------------------------------------------------------------------
 
-var g_bulletSpeed = 2;
+var g_bulletSpeed = 1;
 function bulletSpeedAction(select, canvas) {
     g_bulletSpeed = elementAction(select, canvas);
+}
+//--------------------------------------------------------------------
+
+var g_asteroidSpeed = 2;
+function asteroidSpeedAction(select, canvas) {
+    g_asteroidSpeed = elementAction(select, canvas);
+}
+//--------------------------------------------------------------------
+
+var g_asteroidSpawnRate = 30;
+function asteroidSpawnRateAction(select, canvas) {
+    g_asteroidSpawnRate = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
@@ -252,4 +264,11 @@ function SaveAsPNG(canvas) {
     var url = canvas.toDataURL("image/png");
     document.location.href = url.replace("image/png", "image/octet-stream");
 }
+//--------------------------------------------------------------------
+
+function CollideEntity(ex1, ey1, r1, ex2, ey2, r2) {
+    if (ex1 - r1 < ex2 + r2 && ex2 - r2 < ex1 + r1 && ey1 - r1 < ey2 + r2 && ey2 - r2 < ey1 + r1)
+        return 1;
+    return 0;
+};
 //--------------------------------------------------------------------
