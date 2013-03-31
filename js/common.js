@@ -224,6 +224,13 @@ function chargedBulletAction(select, canvas) {
 }
 //--------------------------------------------------------------------
 
+var g_minCharge = 15;
+function chargedBulletMinAction(select, canvas) {
+    canvas.focus();
+    g_minCharge = parseInt(select.value, 10);
+}
+//--------------------------------------------------------------------
+
 function SaveAsPNG(canvas) {
     var url = canvas.toDataURL("image/png");
     document.location.href = url.replace("image/png", "image/octet-stream");
