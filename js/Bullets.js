@@ -98,7 +98,7 @@ function Bullets() {
                 var bullet = m_bulletList[i];
                 bullet.x += bullet.vx;
                 bullet.y += bullet.vy;
-                if (bullet.y > m_canvas.height) {
+                if (bullet.y > m_canvas.height || bullet.x < 0 || bullet.x > m_canvas.width) {
                     m_bulletList.splice(i, 1);
                 } else if (CollideEntity(bullet.x, bullet.y, m_bulletSize, m_playerPosition.x, m_playerPosition.y, m_playerRadius)) {
                     m_bulletList.splice(i, 1);
