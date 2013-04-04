@@ -130,9 +130,9 @@ function RoundShoot() {
         };
         //--------------------------------------------------------------------
         this.Shoot = function () {
-            var step = TWO_PI / g_circleBulletCount;
-            var rad = (g_circleBulletCount % 2 == 0) ? 0 : step / 2;
-            for (var i = g_circleBulletCount; i--; rad += step) {
+            var step = TWO_PI / g_roundBulletCount;
+            var rad = (g_roundBulletCount % 2 == 0) ? 0 : step / 2;
+            for (var i = g_roundBulletCount; i--; rad += step) {
                 var bullet = {
                     x: m_playerPosition.x, y: m_playerPosition.y,
                     vx: Math.sin(rad), vy: Math.cos(rad)
