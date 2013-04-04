@@ -248,9 +248,9 @@ function fanBulletAction(select, canvas) {
 }
 //--------------------------------------------------------------------
 
-var g_circleBulletCount = 6;
-function circleBulletAction(select, canvas) {
-    g_circleBulletCount = elementAction(select, canvas);
+var g_roundBulletCount = 6;
+function roundBulletAction(select, canvas) {
+    g_roundBulletCount = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
