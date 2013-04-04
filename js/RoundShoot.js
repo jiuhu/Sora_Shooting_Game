@@ -15,18 +15,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var g_circleShoot = new CircleShoot();
-g_circleShoot.Start();
+var g_roundShoot = new RoundShoot();
+g_roundShoot.Start();
 //--------------------------------------------------------------------
 
-function CircleShoot() {
+function RoundShoot() {
     var m_space = new Space();
     var m_shell = new Shell();
     var m_canvas = null;
     var m_context = null;
     //--------------------------------------------------------------------
     this.Start = function () {
-        m_canvas = m_shell.GetCanvas("cvsCircleShoot");
+        m_canvas = m_shell.GetCanvas("cvsRoundShoot");
         if (m_canvas) {
             m_context = m_canvas.getContext("2d");
             if (m_context != null) {
