@@ -54,9 +54,10 @@ function SplitBulletShoot() {
         var m_bulletList = [];
         var m_bulletSize = 0;
         var m_bulletOffset = 0;
-        var m_explodedBulletList = [];
-        var m_explodedBulletSize = 0;
-        var m_explodedBulletOffset = 0;
+        var m_splitBulletList = [];
+        var m_splitBulletSize = 0;
+        var m_splitBulletOffset = 0;
+        var m_splitBulletCount = 5;
         var m_shootCounter = 0;
         var m_prevShootStatus = 0;
         //--------------------------------------------------------------------
@@ -75,8 +76,8 @@ function SplitBulletShoot() {
             m_bulletSize = 8;
             m_bulletOffset = -4;
 
-            m_explodedBulletSize = 4;
-            m_explodedBulletOffset = -2;
+            m_splitBulletSize = 4;
+            m_splitBulletOffset = -2;
         };
         //--------------------------------------------------------------------
         this.Update = function () {
@@ -109,7 +110,10 @@ function SplitBulletShoot() {
                 if (bullet.c) {
                     bullet.c--;
                     if (bullet.c == 0) {
-                        this.BulletExplode(bullet);
+                        if (g_bulletSplitType == "fan")
+                            this.FanShoot(bullet);
+                        else if (g_bulletSplitType == "round")
+                            this.RoundShoot(bullet);
                     }
                 }
                 if (bullet.y < 0 || !bullet.c) {
@@ -125,15 +129,15 @@ function SplitBulletShoot() {
                 }
             }
             m_context.fillStyle = "green";
-            for (var i = m_explodedBulletList.length; i-- > 0;) {
-                var bullet = m_explodedBulletList[i];
+            for (var i = m_splitBulletList.length; i-- > 0;) {
+                var bullet = m_splitBulletList[i];
                 bullet.x += bullet.vx * g_bulletSpeed;
                 bullet.y += bullet.vy * g_bulletSpeed;
                 if (bullet.y < 0) {
-                    m_explodedBulletList.splice(i, 1);
+                    m_splitBulletList.splice(i, 1);
                 } else {
                     m_context.setTransform(1, 0, 0, 1, bullet.x, bullet.y);
-                    m_context.fillRect(m_explodedBulletOffset, m_explodedBulletOffset, m_explodedBulletSize, m_explodedBulletSize);
+                    m_context.fillRect(m_splitBulletOffset, m_splitBulletOffset, m_splitBulletSize, m_splitBulletSize);
                 }
             }
             m_context.setTransform(1, 0, 0, 1, m_playerPosition.x, m_playerPosition.y);
@@ -161,20 +165,32 @@ function SplitBulletShoot() {
         this.Shoot = function () {
             var bullet = {
                 x: m_playerPosition.x, y: m_playerPosition.y,
-                c: g_explosionRate
+                c: g_bulletSplitRate
             };
             m_bulletList.push(bullet);
         };
         //--------------------------------------------------------------------
-        this.BulletExplode = function (bullet) {
-            var step = TWO_PI / 6;
-            var rad = (6 % 2 == 0) ? 0 : step / 2;
-            for (var i = 6; i--; rad += step) {
+        this.FanShoot = function (bullet) {
+            var step = Math.PI / m_splitBulletCount;
+            var rad = step / 2;
+            for (var i = m_splitBulletCount; i--; rad += step) {
                 var bullet = {
                     x: bullet.x, y: bullet.y,
-                    vx: Math.sin(rad), vy: Math.cos(rad)
+                    vx: Math.cos(rad), vy: -Math.sin(rad)
                 };
-                m_explodedBulletList.push(bullet);
+                m_splitBulletList.push(bullet);
+            }
+        };
+        //--------------------------------------------------------------------
+        this.RoundShoot = function (bullet) {
+            var step = TWO_PI / m_splitBulletCount;
+            var rad = 0;
+            for (var i = m_splitBulletCount; i--; rad += step) {
+                var bullet = {
+                    x: bullet.x, y: bullet.y,
+                    vx: Math.sin(rad), vy: -Math.cos(rad)
+                };
+                m_splitBulletList.push(bullet);
             }
         };
         //--------------------------------------------------------------------

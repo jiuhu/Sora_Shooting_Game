@@ -213,7 +213,6 @@ function autofireAction(select, canvas) {
 
 var g_turretShootRate = 30;
 function turretShootAction(select, canvas) {
-    elementAction(select, canvas);
     g_turretShootRate = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
@@ -254,9 +253,16 @@ function roundBulletAction(select, canvas) {
 }
 //--------------------------------------------------------------------
 
-var g_explosionRate = 30;
-function explosionBulletAction(select, canvas) {
-    g_explosionRate = elementAction(select, canvas);
+var g_bulletSplitRate = 30;
+function bulletSplitRateAction(select, canvas) {
+    g_bulletSplitRate = elementAction(select, canvas);
+}
+//--------------------------------------------------------------------
+
+var g_bulletSplitType = "fan";
+function bulletSplitTypeAction(select, canvas) {
+    canvas.focus();
+    g_bulletSplitType = select.value;
 }
 //--------------------------------------------------------------------
 
