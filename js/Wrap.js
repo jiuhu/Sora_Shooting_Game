@@ -136,11 +136,10 @@ function Wrap() {
                 m_context.stroke();
                 m_wrapAnimation.timer--;
             }
+            m_context.font = "14px Comic Sans MS";
+            m_context.fillText("Wrap Cool Down", 0, 14);
             m_context.fillStyle = "red";
-            m_context.fillRect(0, 0, m_wrapCooldown * 5, 16);
-
-            //m_context.setTransform(1, 0, 0, 1, m_playerPosition.x, m_playerPosition.y);
-            //m_context.drawImage(m_playerImg, m_playerOffset, m_playerOffset);
+            m_context.fillRect(120, 0, m_wrapCooldown * 5, 16);
             m_context.drawImage(m_playerImg, m_playerPosition.x, m_playerPosition.y);
         };
         //--------------------------------------------------------------------
