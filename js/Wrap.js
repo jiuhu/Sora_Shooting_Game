@@ -69,6 +69,7 @@ function Wrap() {
         //--------------------------------------------------------------------
         var released = 1;
         var up0 = 0, down0 = 0, left0 = 0, right0 = 0;
+        var wrapTime = 0;
         this.Update = function () {
             var up = m_shell.IsKeyPressed(INPUT.UP);
             var down = m_shell.IsKeyPressed(INPUT.DOWN);
@@ -77,7 +78,7 @@ function Wrap() {
 
             if (up || down || left || right) {
                 var speed = 0;
-                if (released && m_wrapCooldown == 0 &&
+                if (released && wrapTime && m_wrapCooldown == 0 &&
                     up == up0 && down == down0 &&
                     left == left0 && right == right0) {
                     m_wrapCooldown = g_wrapRate;
@@ -92,6 +93,7 @@ function Wrap() {
                     left0 = left;
                     right0 = right;
                     released = 0;
+                    wrapTime = 10;
                 }
                 if (up && 0 <= m_playerPosition.y) {
                     m_playerPosition.y -= speed;
@@ -118,6 +120,9 @@ function Wrap() {
             } else {
                 released = 1;
             }
+            if (wrapTime)
+                wrapTime--;
+
             if (m_wrapCooldown)
                 m_wrapCooldown--;
         };

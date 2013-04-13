@@ -188,7 +188,7 @@ function SplitBulletShoot() {
             for (var i = m_splitBulletCount; i--; rad += step) {
                 var bullet = {
                     x: bullet.x, y: bullet.y,
-                    vx: Math.sin(rad), vy: -Math.cos(rad)
+                    vx: Math.cos(rad), vy: Math.sin(rad)
                 };
                 m_splitBulletList.push(bullet);
             }
