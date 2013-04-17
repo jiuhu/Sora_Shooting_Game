@@ -266,6 +266,12 @@ function bulletSplitTypeAction(select, canvas) {
 }
 //--------------------------------------------------------------------
 
+var g_scrollSpeed = 1;
+function scrollSpeedAction(select, canvas) {
+    g_scrollSpeed = elementAction(select, canvas);
+}
+//--------------------------------------------------------------------
+
 function SaveAsPNG(canvas) {
     var url = canvas.toDataURL("image/png");
     document.location.href = url.replace("image/png", "image/octet-stream");
