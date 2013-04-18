@@ -19,11 +19,17 @@ var g_asteroidStrikeI = new AsteroidStrikeI();
 g_asteroidStrikeI.Start();
 //--------------------------------------------------------------------
 
+function reset() {
+    g_asteroidStrikeI.Reset();
+}
+//--------------------------------------------------------------------
+
 function AsteroidStrikeI() {
     var m_space = new Space();
     var m_shell = new Shell();
     var m_canvas = null;
     var m_context = null;
+    var m_id = null;
     //--------------------------------------------------------------------
     this.Start = function () {
         m_canvas = m_shell.GetCanvas("cvsAsteroidStrikeI");
@@ -31,9 +37,15 @@ function AsteroidStrikeI() {
             m_context = m_canvas.getContext("2d");
             if (m_context != null) {
                 m_space.Init();
-                setInterval(this.Frame, 16);
+                m_id = setInterval(this.Frame, 16);
             }
         }
+    };
+    //--------------------------------------------------------------------
+    this.Reset = function () {
+        clearInterval(m_id);
+        m_space.Reset();
+        m_id = setInterval(this.Frame, 16);
     };
     //--------------------------------------------------------------------
     this.Frame = function () {
@@ -42,6 +54,9 @@ function AsteroidStrikeI() {
         m_space.Update();
         m_space.Draw();
         m_context.restore();
+
+        if (m_space.Over())
+            clearInterval(m_id);
     };
     //--------------------------------------------------------------------
 
@@ -51,10 +66,20 @@ function AsteroidStrikeI() {
         var m_playerPosition = { x: 0, y: 0 };
         var m_playerRadius = 0;
         var m_playerOffset = 0;
+        var m_playerHP = 100;
         var m_asteroidImg = null;
         var m_asteroidList = [];
         var m_asteroidRadius = 0;
         var m_asteroidOffset = 0;
+        var m_asteroidSpawnCounter = 0;
+        var m_textMargin = 0;
+        var m_timeReamining = g_survivingTime;
+        var m_isOver = false;
+        var prevTime = getTimeInMilli();
+        //--------------------------------------------------------------------
+        this.Over = function () {
+            return m_isOver;
+        };
         //--------------------------------------------------------------------
         this.Init = function () {
             m_bgImg = new Image();
@@ -71,9 +96,21 @@ function AsteroidStrikeI() {
             m_asteroidImg.src = "https://sites.google.com/site/ahewe95/sora_shooting_game/asteroid.png";
             m_asteroidRadius = 16;
             m_asteroidOffset = -16;
+
+            m_textMargin = m_canvas.width - 100;
         };
         //--------------------------------------------------------------------
-        var counter = 0;
+        this.Reset = function () {
+            m_playerPosition.x = m_canvas.width / 2;
+            m_playerPosition.y = m_canvas.height / 2;
+            m_playerHP = 100;
+            m_asteroidSpawnCounter = 0;
+            m_timeReamining = g_survivingTime;
+            m_asteroidList = [];
+            m_isOver = false;
+            prevTime = getTimeInMilli();
+        };
+        //--------------------------------------------------------------------
         this.Update = function () {
             if (m_shell.IsKeyPressed(INPUT.UP)) {
                 this.MoveY(-g_shipSpeed);
@@ -86,12 +123,12 @@ function AsteroidStrikeI() {
                 this.MoveX(-g_shipSpeed);
             }
 
-            if (!counter) {
+            if (!m_asteroidSpawnCounter) {
                 var asteroid = { x: Rand(m_asteroidRadius, m_canvas.width - m_asteroidRadius), y: m_asteroidOffset };
                 m_asteroidList.push(asteroid);
-                counter = g_asteroidSpawnRate;
+                m_asteroidSpawnCounter = g_asteroidSpawnRate;
             } else {
-                counter--;
+                m_asteroidSpawnCounter--;
             }
         };
         //--------------------------------------------------------------------
@@ -104,6 +141,7 @@ function AsteroidStrikeI() {
                     m_asteroidList.splice(i, 1);
                 } else if (CollideEntity(asteroid.x, asteroid.y, m_asteroidRadius, m_playerPosition.x, m_playerPosition.y, m_playerRadius)) {
                     m_asteroidList.splice(i, 1);
+                    m_playerHP -= g_asteroidDamage;
                 } else {
                     m_context.setTransform(1, 0, 0, 1, asteroid.x, asteroid.y);
                     m_context.drawImage(m_asteroidImg, m_asteroidOffset, m_asteroidOffset);
@@ -111,6 +149,33 @@ function AsteroidStrikeI() {
             }
             m_context.setTransform(1, 0, 0, 1, m_playerPosition.x, m_playerPosition.y);
             m_context.drawImage(m_playerImg, m_playerOffset, m_playerOffset);
+
+            var currentTime = getTimeInMilli();
+            if (currentTime - prevTime > 1000) {
+                if (m_timeReamining > 0)
+                    m_timeReamining--;
+                prevTime = currentTime;
+            }
+
+            m_context.font = "14px Comic Sans MS";
+            m_context.fillStyle = "red";
+            m_context.setTransform(1, 0, 0, 1, 0, 0);
+            m_context.fillText("Survive " + m_timeReamining, m_textMargin, 14);
+            m_context.fillText("HP ", 5, 14);
+
+            if (m_timeReamining == 0) {
+                m_isOver = true;
+                m_context.font = "40px Comic Sans MS";
+                m_context.fillText("You win!", 100, m_canvas.height / 2);
+            } else if (m_playerHP <= 0) {
+                m_isOver = true;
+                m_context.font = "40px Comic Sans MS";
+                m_context.fillText("Game Over!", 100, m_canvas.height / 2);
+            } else {
+                if (m_playerHP < 25)
+                    m_context.fillStyle = "yellow";
+                m_context.fillRect(40, 2, m_playerHP, 14);
+            }
         };
         //--------------------------------------------------------------------
         this.MoveX = function (move) {

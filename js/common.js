@@ -23,6 +23,11 @@ function Rand(min, max) {
 };
 //--------------------------------------------------------------------
 
+function getTimeInMilli() {
+    return +new Date();
+};
+//--------------------------------------------------------------------
+
 var keys = {
     W: 87,
     A: 65,
@@ -202,6 +207,18 @@ function asteroidSpeedAction(select, canvas) {
 var g_asteroidSpawnRate = 30;
 function asteroidSpawnRateAction(select, canvas) {
     g_asteroidSpawnRate = elementAction(select, canvas);
+}
+//--------------------------------------------------------------------
+
+var g_asteroidDamage = 1;
+function asteroidDamageAction(select, canvas) {
+    g_asteroidDamage = elementAction(select, canvas);
+}
+//--------------------------------------------------------------------
+
+var g_survivingTime = 60;
+function survivingTimeAction(select, canvas) {
+    g_survivingTime = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
