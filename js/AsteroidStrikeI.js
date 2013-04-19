@@ -19,7 +19,7 @@ var g_asteroidStrikeI = new AsteroidStrikeI();
 g_asteroidStrikeI.Start();
 //--------------------------------------------------------------------
 
-function reset() {
+function resetAsteroidStrikeI() {
     g_asteroidStrikeI.Reset();
 }
 //--------------------------------------------------------------------
@@ -66,7 +66,7 @@ function AsteroidStrikeI() {
         var m_playerPosition = { x: 0, y: 0 };
         var m_playerRadius = 0;
         var m_playerOffset = 0;
-        var m_playerHP = 100;
+        var m_playerHP = g_myShipHP;
         var m_asteroidImg = null;
         var m_asteroidList = [];
         var m_asteroidRadius = 0;
@@ -75,7 +75,7 @@ function AsteroidStrikeI() {
         var m_textMargin = 0;
         var m_timeReamining = g_survivingTime;
         var m_isOver = false;
-        var prevTime = getTimeInMilli();
+        var m_prevTime = getTimeInMilli();
         //--------------------------------------------------------------------
         this.Over = function () {
             return m_isOver;
@@ -103,12 +103,12 @@ function AsteroidStrikeI() {
         this.Reset = function () {
             m_playerPosition.x = m_canvas.width / 2;
             m_playerPosition.y = m_canvas.height / 2;
-            m_playerHP = 100;
+            m_playerHP = g_myShipHP;
             m_asteroidSpawnCounter = 0;
             m_timeReamining = g_survivingTime;
             m_asteroidList = [];
             m_isOver = false;
-            prevTime = getTimeInMilli();
+            m_prevTime = getTimeInMilli();
         };
         //--------------------------------------------------------------------
         this.Update = function () {
@@ -151,10 +151,10 @@ function AsteroidStrikeI() {
             m_context.drawImage(m_playerImg, m_playerOffset, m_playerOffset);
 
             var currentTime = getTimeInMilli();
-            if (currentTime - prevTime > 1000) {
+            if (currentTime - m_prevTime > 1000) {
                 if (m_timeReamining > 0)
                     m_timeReamining--;
-                prevTime = currentTime;
+                m_prevTime = currentTime;
             }
 
             m_context.font = "14px Comic Sans MS";

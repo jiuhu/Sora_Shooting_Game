@@ -283,9 +283,22 @@ function bulletSplitTypeAction(select, canvas) {
 }
 //--------------------------------------------------------------------
 
+var g_shootType = "auto";
+function shootTypeAction(select, canvas) {
+    canvas.focus();
+    g_shootType = select.value;
+}
+//--------------------------------------------------------------------
+
 var g_scrollSpeed = 1;
 function scrollSpeedAction(select, canvas) {
     g_scrollSpeed = elementAction(select, canvas);
+}
+//--------------------------------------------------------------------
+
+var g_myShipHP = 100;
+function myShipHPAction(select, canvas) {
+    g_myShipHP = elementAction(select, canvas);
 }
 //--------------------------------------------------------------------
 
