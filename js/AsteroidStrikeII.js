@@ -89,6 +89,7 @@ function AsteroidStrikeII() {
         var m_score = 0;
         var m_isOver = false;
         var m_prevTime = getTimeInMilli();
+        var m_currentType = null;
         //--------------------------------------------------------------------
         this.Over = function () {
             return m_isOver;
@@ -107,7 +108,7 @@ function AsteroidStrikeII() {
             m_playerPosition.y = m_canvas.height / 2;
 
             m_bulletRadius = 8;
-            m_bulletOffset = -m_bulletRadius;
+            m_bulletOffset = -m_bulletRadius / 2;
 
             m_chargedBulletWidth = 16;
             m_chargedBulletHeight = 32;
@@ -124,6 +125,8 @@ function AsteroidStrikeII() {
 
             m_textMargin = m_canvas.width - 100;
             m_context.font = "14px Comic Sans MS";
+
+            m_currentType = g_shootType;
         };
         //--------------------------------------------------------------------
         this.Reset = function () {
@@ -140,6 +143,7 @@ function AsteroidStrikeII() {
             m_explosionList = [];
             m_isOver = false;
             m_prevTime = getTimeInMilli();
+            m_currentType = g_shootType;
         };
         //--------------------------------------------------------------------
         this.Update = function () {
@@ -210,12 +214,12 @@ function AsteroidStrikeII() {
                 if (bullet.y < 0) {
                     m_bulletList.splice(i, 1);
                 } else {
+                    m_context.fillStyle = "red";
                     m_context.setTransform(1, 0, 0, 1, bullet.x, bullet.y);
-                    if (g_shootType == "auto") {
+                    if (m_currentType == "auto") {
                         m_context.fillRect(m_bulletOffset, m_bulletOffset, m_bulletRadius, m_bulletRadius);
                     } else {
                         if (bullet.status < g_maxCharge) {
-                            m_context.fillStyle = "red";
                             m_context.fillRect(m_bulletOffset, m_bulletOffset, m_bulletRadius, m_bulletRadius);
                         } else {
                             m_context.fillStyle = "blue";
@@ -233,7 +237,7 @@ function AsteroidStrikeII() {
                         if (CollideEntity(asteroid.x, asteroid.y, m_entityRadius, bullet.x, bullet.y, m_bulletRadius)) {
                             this.AddExplosion(asteroid.x, asteroid.y);
                             m_asteroidList.splice(j, 1);
-                            if (g_shootType == "charge" &&bullet.status == g_maxCharge) {
+                            if (m_currentType == "charge" &&bullet.status == g_maxCharge) {
                                 bullet.chargedHitCounter++;
                                 m_score += bullet.chargedHitCounter;
                                 continue;
@@ -274,7 +278,7 @@ function AsteroidStrikeII() {
             m_context.fillText("Score " + m_score, m_textMargin, 28);
             m_context.fillText("HP ", 5, 14);
 
-            if (g_shootType == "charge") {
+            if (m_currentType == "charge") {
                 m_context.fillText("CG ", 5, 30);
                 if (m_chargedStatus == g_maxCharge)
                     m_context.fillStyle = "blue";
@@ -325,7 +329,7 @@ function AsteroidStrikeII() {
         //--------------------------------------------------------------------
         this.Shoot = function (shoot) {
             var bullet = null;
-            if (g_shootType == "auto") {
+            if (m_currentType == "auto") {
                 if (shoot) {
                     if (!m_prevShootStatus || !m_shootCounter) {
                         bullet = { x: m_playerPosition.x, y: m_playerPosition.y };
